@@ -1,0 +1,926 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf100
+{\fonttbl\f0\fnil\fcharset0 Menlo-Bold;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 Menlo-BoldItalic;
+\f3\fnil\fcharset0 Menlo-Italic;}
+{\colortbl;\red255\green255\blue255;\red127\green0\blue85;\red0\green0\blue0;\red63\green127\blue95;
+\red106\green62\blue62;\red0\green0\blue192;\red42\green0\blue255;\red100\green100\blue100;}
+{\*\expandedcolortbl;;\csgenericrgb\c49804\c0\c33333;\cssrgb\c0\c0\c0;\csgenericrgb\c24706\c49804\c37255;
+\csgenericrgb\c41569\c24314\c24314;\csgenericrgb\c0\c0\c75294;\csgenericrgb\c16471\c0\c100000;\csgenericrgb\c39216\c39216\c39216;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs24 \cf2 \
+\cf3 //BankTester Class (main)\cf2 \
+package
+\f1\b0 \cf0  bankAssignment;\
+\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.util.Scanner;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf4 /*\cf0 \
+\cf4  * This class holds the main function for the bank. It displays the initial window for users that \cf0 \
+\cf4  * allows them to access their accounts. It also enables users to save and quit.\cf0 \
+\cf4  */\cf0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 public
+\f1\b0 \cf0  
+\f0\b \cf2 class
+\f1\b0 \cf0  BankTester \{\
+	
+\f0\b \cf2 public
+\f1\b0 \cf0  
+\f0\b \cf2 static
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  main(String[] \cf5 args\cf0 ) \{\
+		\
+		Bank \cf5 bank\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  Bank();\
+		Scanner \cf5 \ul \ulc5 scanner\cf0 \ulnone  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  Scanner(System.
+\f2\i\b \cf6 in
+\f1\i0\b0 \cf0 );\
+		
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 choice\cf0  = 1;\
+		\
+		
+\f0\b \cf2 while
+\f1\b0 \cf0  (\cf5 choice\cf0  != 2)\
+		\{\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Options:"\cf0 );\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 " 1)Login"\cf0 );\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 " 2)Save and Quit"\cf0 );\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .print(\cf7 "Choice:"\cf0 );\
+			\cf5 choice\cf0  = \cf5 scanner\cf0 .nextInt();\
+			\
+			
+\f0\b \cf2 switch
+\f1\b0 \cf0 (\cf5 choice\cf0 )\{\
+			\
+				
+\f0\b \cf2 case
+\f1\b0 \cf0  1:\
+					\cf5 bank\cf0 .LogIn();\
+					
+\f0\b \cf2 break
+\f1\b0 \cf0 ;\
+				
+\f0\b \cf2 case
+\f1\b0 \cf0  2:\
+					\cf5 bank\cf0 .writeDB();\
+					System.
+\f3\i exit
+\f1\i0 (1);\
+					
+\f0\b \cf2 break
+\f1\b0 \cf0 ;\
+				
+\f0\b \cf2 default
+\f1\b0 \cf0 :\
+					System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println (\cf7 "Invalid choice"\cf0 );\
+			\}\
+		\}\
+	\}\
+\}\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 //Bank Class
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 package
+\f1\b0 \cf0  bankAssignment;\
+\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.io.BufferedReader;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.io.File;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.io.FileNotFoundException;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.io.FileOutputStream;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.io.FileReader;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.io.IOException;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.text.DecimalFormat;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.util.ArrayList;\
+
+\f0\b \cf2 import
+\f1\b0 \cf0  java.util.Scanner;\
+\
+\cf4 /*\cf0 \
+\cf4  *  This class holds all the functions that can be done to bank account data. It takes in a\cf0 \
+\cf4  * 	database of accounts and stores the information into an array of BankAccount objects.\cf0 \
+\cf4  */\cf0 \
+
+\f0\b \cf2 public
+\f1\b0 \cf0  
+\f0\b \cf2 class
+\f1\b0 \cf0  Bank \{\
+	\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  ArrayList<BankAccount> \cf6 list\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  ArrayList<BankAccount>();\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 final
+\f1\b0 \cf0  String \cf6 location\cf0  = \cf7 "/Users/Camille/Documents/Assignment0/src/bankAssignment/bankDB.txt"\cf0 ;\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  Scanner \cf6 scanner\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  Scanner(System.
+\f2\i\b \cf6 in
+\f1\i0\b0 \cf0 );\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  File \cf6 file\cf0 ;\
+	DecimalFormat \cf6 decimalFormat\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  DecimalFormat(\cf7 "#.00"\cf0 );\
+	\
+	\cf4 //This function is the constructor for the Bank class. It imports a file, and calls the reader.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  Bank() \{\
+		\
+		\cf6 file\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  File(\cf6 location\cf0 );\
+		readDB();\
+	\}\
+	\
+	\cf4 /*\cf0 \
+\cf4 	 * This function reads the file and separates the content into its appropriate bank account object.\cf0 \
+\cf4 	 * It then inserts this bank account into an array of bank accounts.\cf0 \
+\cf4 	 */\cf0 \
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  readDB()\
+	\{\
+		
+\f0\b \cf2 try
+\f1\b0 \cf0  \{\
+			BufferedReader \cf5 \ul \ulc5 bufferedReader\cf0 \ulnone  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  BufferedReader(
+\f0\b \cf2 new
+\f1\b0 \cf0  FileReader(\cf6 file\cf0 )); \cf4 //\cf4 \ul \ulc4 Bufferedreader\cf4 \ulnone  reads one line.\cf0 \
+			String \cf5 line\cf0  = \cf7 ""\cf0 ;\
+			\
+			
+\f0\b \cf2 while
+\f1\b0 \cf0  ((\cf5 line\cf0  = \cf5 bufferedReader\cf0 .readLine()) != 
+\f0\b \cf2 null
+\f1\b0 \cf0 ) \{\
+				\
+				String[] \cf5 accountinfo\cf0  = \cf5 line\cf0 .split(\cf7 ","\cf0 );\
+				BankAccount \cf5 bankAccount\cf0  = 
+\f0\b \cf2 null
+\f1\b0 \cf0 ;\
+				\
+				
+\f0\b \cf2 if
+\f1\b0 \cf0 (\cf5 accountinfo\cf0 .\cf6 length\cf0  == 5) \{	\cf4 // string.length() array.length <-- if array is of single variables\cf0 \
+					 \cf5 bankAccount\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  BankAccount(Integer.
+\f3\i parseInt
+\f1\i0 (\cf5 accountinfo\cf0 [0]), Integer.
+\f3\i parseInt
+\f1\i0 (\cf5 accountinfo\cf0 [1]),\
+							Double.
+\f3\i parseDouble
+\f1\i0 (\cf5 accountinfo\cf0 [2]), Double.
+\f3\i parseDouble
+\f1\i0 (\cf5 accountinfo\cf0 [3]), \cf5 accountinfo\cf0 [4], 
+\f0\b \cf2 true
+\f1\b0 \cf0 );\
+				\} \
+				
+\f0\b \cf2 else
+\f1\b0 \cf0  
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 accountinfo\cf0 .\cf6 length\cf0  == 4) \{\
+					 \cf5 bankAccount\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  BankAccount(Integer.
+\f3\i parseInt
+\f1\i0 (\cf5 accountinfo\cf0 [0]), Integer.
+\f3\i parseInt
+\f1\i0 (\cf5 accountinfo\cf0 [1]),\
+							Double.
+\f3\i parseDouble
+\f1\i0 (\cf5 accountinfo\cf0 [2]), 0, \cf5 accountinfo\cf0 [3], 
+\f0\b \cf2 false
+\f1\b0 \cf0 );\
+				\}\
+				
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+					System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println (\cf7 "Error:Incorrect account format."\cf0 );\
+				\}\
+				\
+				
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 bankAccount\cf0  != 
+\f0\b \cf2 null
+\f1\b0 \cf0 ) \{\
+					\cf6 list\cf0 .add(\cf5 bankAccount\cf0 );\
+				\}\
+			\}		\
+		\} 
+\f0\b \cf2 catch
+\f1\b0 \cf0  (FileNotFoundException \cf5 ex\cf0 ) \{\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "FileNotFoundException Occurred"\cf0 );\
+		\} 
+\f0\b \cf2 catch
+\f1\b0 \cf0  (IOException \cf5 ex\cf0 ) \{\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println (\cf7 "IOException Occurred"\cf0 );\
+		\}\
+	\}\
+	\
+	\cf4 /*\cf0 \
+\cf4 	 * This function handles the log-in features for the user. This includes asking for the \cf0 \
+\cf4 	 * account number, verifying that it exists, and then requesting a correct pin. If a checking account does not\cf0 \
+\cf4 	 * exist, this function will display savings account information and allow a user to\cf0 \
+\cf4 	 * make changes to the account.\cf0 \
+\cf4 	 */\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  LogIn() \{\
+		\
+		
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 acntNum\cf0 ;\
+		
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 pin\cf0 ;\
+		\
+		System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .print(\cf7 "Enter in Bank Account Number: "\cf0 );\
+		\cf5 acntNum\cf0  = \cf6 scanner\cf0 .nextInt();\
+		\
+		BankAccount \cf5 usersAccount\cf0  = 
+\f0\b \cf2 null
+\f1\b0 \cf0 ;\
+		\
+		
+\f0\b \cf2 for
+\f1\b0 \cf0  (
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 i\cf0  = 0; \cf5 i\cf0  < \cf6 list\cf0 .size(); \cf5 i\cf0  ++) \{ \cf4 // arrayList.size() <-- if array is of objects\cf0 \
+			BankAccount \cf5 bankAccount\cf0  = \cf6 list\cf0 .get(\cf5 i\cf0 );  \cf4 //<-- arrayList.get(i), array[i]\cf0 \
+			
+\f0\b \cf2 if
+\f1\b0 \cf0 (\cf5 bankAccount\cf0 .getAcntNum() == \cf5 acntNum\cf0 ) \{\
+				\cf5 usersAccount\cf0  = \cf5 bankAccount\cf0 ;\
+				
+\f0\b \cf2 break
+\f1\b0 \cf0 ;\
+			\}\
+		\}\
+		\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0 (\cf5 usersAccount\cf0  == 
+\f0\b \cf2 null
+\f1\b0 \cf0 ) \{\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Invalid Account number"\cf0 );\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+		\}\
+		\
+		
+\f0\b \cf2 boolean
+\f1\b0 \cf0  \cf5 flag\cf0  = 
+\f0\b \cf2 false
+\f1\b0 \cf0 ;\
+		\
+		
+\f0\b \cf2 for
+\f1\b0 \cf0  (
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 i\cf0  = 0; \cf5 i\cf0  < 3; \cf5 i\cf0 ++) \{\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .print(\cf7 "Enter in pin: "\cf0 );\
+			\cf5 pin\cf0  = \cf6 scanner\cf0 .nextInt();\
+	\
+			
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 usersAccount\cf0 .checkPin(\cf5 pin\cf0 )) \{\
+				\cf5 flag\cf0  = 
+\f0\b \cf2 true
+\f1\b0 \cf0 ;\
+				
+\f0\b \cf2 break
+\f1\b0 \cf0 ;\
+			\}\
+			\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Invalid Pin: Number of attempts left: "\cf0  + (2 - \cf5 i\cf0 ));\
+		\}\
+		\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 flag\cf0 ) \{		\
+			
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 usersAccount\cf0 .checkingExists()) \{\
+				showChoice (\cf5 usersAccount\cf0 );\
+			\}\
+			
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+				\cf5 flag\cf0  = 
+\f0\b \cf2 true
+\f1\b0 \cf0 ;\
+				\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Your savings account has a blance of: $"\cf0  + \cf6 decimalFormat\cf0 .format(\cf5 usersAccount\cf0 .getSavings()));\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "How would you like to proceed:"\cf0 );\
+				\
+				
+\f0\b \cf2 while
+\f1\b0 \cf0 (\cf5 flag\cf0 ) \{\
+					System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "(Enter in positive number to deposit, negative number to withdraw)"\cf0 );\
+					System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .print(\cf7 "Amount: $"\cf0 );\
+					
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 newAmount2\cf0  = \cf6 scanner\cf0 .nextDouble();\
+				\
+					
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 newAmount2\cf0  + \cf5 usersAccount\cf0 .getSavings() > 0 ) \{\
+						changeAccount(\cf5 newAmount2\cf0 , \cf5 usersAccount\cf0 , \cf7 "savings"\cf0 );\
+						\cf5 flag\cf0  = 
+\f0\b \cf2 false
+\f1\b0 \cf0 ;\
+						
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+					\}\
+					System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Error: Negative balance. Please try again:"\cf0 );\
+				\}\
+			\}		\
+		\}\
+		\
+		
+\f0\b \cf2 return
+\f1\b0 \cf0 ;	\
+	\}\
+	\
+	\cf4 /*\cf0 \
+\cf4 	 * This function allows a user to check their checking account and savings information, as well as request\cf0 \
+\cf4 	 * a change to the account. If requested, it will call the change function.\cf0 \
+\cf4 	 */\cf0 \
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  showChoice(BankAccount \cf5 usersAccount\cf0 )\{\
+	\
+		System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Hello "\cf0  + \cf5 usersAccount\cf0 .getAcntName() + \cf7 ", which account would you like to access:"\cf0 );\
+		System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 " 1)Checkings"\cf0 );\
+		System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 " 2)Savings"\cf0 );\
+		System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .print(\cf7 "Choice:"\cf0 );\
+		\
+		
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 choice\cf0  = \cf6 scanner\cf0 .nextInt();\
+		\
+		
+\f0\b \cf2 switch
+\f1\b0 \cf0 (\cf5 choice\cf0 ) \{\
+		\
+			
+\f0\b \cf2 case
+\f1\b0 \cf0  1:\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Your checking account has a balance of: $"\cf0  + \cf6 decimalFormat\cf0 .format(\cf5 usersAccount\cf0 .getChecking()));\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "How would you like to proceed? "\cf0 );\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "(Enter in positive number to deposit, negative number to withdraw)"\cf0 );\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .print(\cf7 "Amount: $"\cf0 );\
+				
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 newAmount\cf0  = \cf6 scanner\cf0 .nextDouble();\
+				
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 newAmount\cf0  + \cf5 usersAccount\cf0 .getChecking() > 0 ) \{\
+					changeAccount(\cf5 newAmount\cf0 ,\cf5 usersAccount\cf0 , \cf7 "checking"\cf0 );\
+					
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+				\}\
+				
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+					System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Error: Negative balance. Please try again."\cf0 );\
+					showChoice(\cf5 usersAccount\cf0 );\
+				\}\
+				
+\f0\b \cf2 break
+\f1\b0 \cf0 ;\
+			
+\f0\b \cf2 case
+\f1\b0 \cf0  2:\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Your savings account has a blance of: $"\cf0  + \cf6 decimalFormat\cf0 .format(\cf5 usersAccount\cf0 .getSavings()));\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "How would you like to proceed:"\cf0 );\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "(Enter in positive number to deposit, negative number to withdraw)"\cf0 );\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .print(\cf7 "Amount: $"\cf0 );\
+				
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 newAmount2\cf0  = \cf6 scanner\cf0 .nextDouble();\
+				
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 newAmount2\cf0  + \cf5 usersAccount\cf0 .getSavings() > 0 ) \{\
+					changeAccount(\cf5 newAmount2\cf0 , \cf5 usersAccount\cf0 , \cf7 "savings"\cf0 );\
+					
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+				\}\
+				
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+					System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Error: Negative balance. Please try again."\cf0 );\
+					showChoice(\cf5 usersAccount\cf0 );\
+				\}\
+				
+\f0\b \cf2 break
+\f1\b0 \cf0 ;\
+			
+\f0\b \cf2 default
+\f1\b0 \cf0 :\
+				System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println (\cf7 "Invalid choice"\cf0 );\
+				showChoice(\cf5 usersAccount\cf0 );\
+		\}\
+	\}\
+	\
+	\cf4 /*\cf0 \
+\cf4 	 * This function allows a user make changes to their checking or savings account. This includes\cf0 \
+\cf4 	 * a withdrawal or deposit.\cf0 \
+\cf4 	 */\cf0 \
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  changeAccount(
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 newAmount\cf0 , BankAccount \cf5 usersAccount\cf0 , String \cf5 type\cf0 ) \{\
+		\
+		\
+		\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 type\cf0  == \cf7 "checking"\cf0 ) \{\
+			\cf5 usersAccount\cf0 .setChecking(\cf5 newAmount\cf0  + \cf5 usersAccount\cf0 .getChecking());\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Thank you, your new checkings balance is $"\cf0  + \cf6 decimalFormat\cf0 .format(\cf5 usersAccount\cf0 .getChecking()));\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Returning to login screen"\cf0 ); \
+		\}\
+		
+\f0\b \cf2 else
+\f1\b0 \cf0  
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 type\cf0  == \cf7 "savings"\cf0 ) \{\
+			\cf5 usersAccount\cf0 .setSavings(\cf5 newAmount\cf0  + \cf5 usersAccount\cf0 .getSavings());\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Thank you, your new savings balance is $"\cf0  + \cf6 decimalFormat\cf0 .format(\cf5 usersAccount\cf0 .getSavings()));\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "Returning to login screen"\cf0 ); \
+		\}\
+		
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+	\}\
+	\
+	\cf4 //This function writes all changes to the bank accounts back to the bank database file.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  writeDB() \{\
+		
+\f0\b \cf2 try
+\f1\b0 \cf0  \{\
+			FileOutputStream \cf5 \ul \ulc5 writer\cf0 \ulnone  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  FileOutputStream(\cf6 file\cf0 ,
+\f0\b \cf2 false
+\f1\b0 \cf0 ); \cf4 //false because we do not \cf0 \
+			\cf4 //want to append (add duplicates) to the original file\cf0 \
+			\
+			\
+			
+\f0\b \cf2 for
+\f1\b0 \cf0  (
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 i\cf0  = 0; \cf5 i\cf0  < \cf6 list\cf0 .size(); \cf5 i\cf0  ++) \{\
+				StringBuilder \cf5 account\cf0  = 
+\f0\b \cf2 new
+\f1\b0 \cf0  StringBuilder();\
+				\cf5 account\cf0 .append(\cf6 list\cf0 .get(\cf5 i\cf0 ).getAcntNum());\
+				\cf5 account\cf0 .append(\cf7 ","\cf0 );\
+				\cf5 account\cf0 .append(\cf6 list\cf0 .get(\cf5 i\cf0 ).getPin());\
+				\cf5 account\cf0 .append(\cf7 ","\cf0 );\
+				\cf5 account\cf0 .append(\cf6 decimalFormat\cf0 .format(\cf6 list\cf0 .get(\cf5 i\cf0 ).getSavings()));\
+				\cf5 account\cf0 .append(\cf7 ","\cf0 );\
+				
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf6 list\cf0 .get(\cf5 i\cf0 ).checkingExists()) \{\
+					\cf5 account\cf0 .append(\cf6 decimalFormat\cf0 .format(\cf6 list\cf0 .get(\cf5 i\cf0 ).getChecking()));\
+					\cf5 account\cf0 .append(\cf7 ","\cf0 );\
+				\}\
+				\cf5 account\cf0 .append(\cf6 list\cf0 .get(\cf5 i\cf0 ).getAcntName());\
+				\cf5 account\cf0 .append(\cf7 "\\n"\cf0 );\
+				\
+				\cf5 writer\cf0 .write(\cf5 account\cf0 .toString().getBytes());\
+			\}\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0 ;\
+		\} 
+\f0\b \cf2 catch
+\f1\b0 \cf0 (FileNotFoundException \cf5 ex\cf0 ) \{ \
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "FileNotFoundException occurred."\cf0 );\
+		\} 
+\f0\b \cf2 catch
+\f1\b0 \cf0  (IOException \cf5 ex\cf0 ) \{\
+			System.
+\f2\i\b \cf6 out
+\f1\i0\b0 \cf0 .println(\cf7 "IOException occurred."\cf0 );\
+		\}\
+	\}\
+\}\
+\
+\
+\
+
+\f0\b // BankAccount Class
+\f1\b0 \
+
+\f0\b \cf2 package
+\f1\b0 \cf0  bankAssignment;\
+\
+\cf4 /*\cf0 \
+\cf4  * This class contains all of the data for the bank account. It's functions allow for access and mutation \cf0 \
+\cf4  * of the data.\cf0 \
+\cf4  */\cf0 \
+
+\f0\b \cf2 public
+\f1\b0 \cf0  
+\f0\b \cf2 class
+\f1\b0 \cf0  BankAccount \{\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf6 acntNum\cf0 ;\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf6 pin\cf0 ;\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf6 savings\cf0 ;\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf6 checking\cf0 ;\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  String \cf6 acntName\cf0 ;\
+	
+\f0\b \cf2 private
+\f1\b0 \cf0  
+\f0\b \cf2 boolean
+\f1\b0 \cf0  \cf6 checkExists\cf0 ;\
+	\
+	\cf4 // This is the constructor for the BankAccount class. It assigns values to each variable.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  BankAccount(
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 acntNum\cf0 , 
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 pin\cf0 , 
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 savings\cf0 , 
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 checking\cf0 , String \cf5 acntName\cf0 , 
+\f0\b \cf2 boolean
+\f1\b0 \cf0  \cf5 checkExists\cf0 ) \{\
+		
+\f0\b \cf2 this
+\f1\b0 \cf0 .\cf6 acntNum\cf0  = \cf5 acntNum\cf0 ;\
+		
+\f0\b \cf2 this
+\f1\b0 \cf0 .\cf6 pin\cf0  = \cf5 pin\cf0 ;\
+		
+\f0\b \cf2 this
+\f1\b0 \cf0 .\cf6 savings\cf0  = \cf5 savings\cf0 ;\
+		
+\f0\b \cf2 this
+\f1\b0 \cf0 .\cf6 checking\cf0  = \cf5 checking\cf0 ;\
+		
+\f0\b \cf2 this
+\f1\b0 \cf0 .\cf6 acntName\cf0  = \cf5 acntName\cf0 ;\
+		
+\f0\b \cf2 this
+\f1\b0 \cf0 .\cf6 checkExists\cf0  = \cf5 checkExists\cf0 ;\
+	\}\
+	\
+	\cf4 // This function accesses the account number for the bank account.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 int
+\f1\b0 \cf0  getAcntNum() \{\
+		
+\f0\b \cf2 return
+\f1\b0 \cf0  \cf6 acntNum\cf0 ;\
+	\}\
+	\
+	\cf4 // This function accesses the pin for the bank account.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 int
+\f1\b0 \cf0  getPin() \{\
+		
+\f0\b \cf2 return
+\f1\b0 \cf0  \cf6 pin\cf0 ;\
+	\}\
+	\
+	\cf4 // This function accesses the account name for the bank account.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  String getAcntName() \{\
+		
+\f0\b \cf2 return
+\f1\b0 \cf0  \cf6 acntName\cf0 ;\
+	\}\
+	\
+	\cf4 // This function accesses the savings account for the bank account.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 double
+\f1\b0 \cf0  getSavings() \{\
+		
+\f0\b \cf2 return
+\f1\b0 \cf0  \cf6 savings\cf0 ;\
+	\}\
+	\
+	\cf4 /*\cf0 \
+\cf4 	 * This function checks if the checking account exists and then\cf0 \
+\cf4 	 * accesses the checking account for the bank account.\cf0 \
+\cf4 	 */\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 double
+\f1\b0 \cf0  getChecking() \{\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf6 checkExists\cf0  == 
+\f0\b \cf2 true
+\f1\b0 \cf0 ) \{\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0  \cf6 checking\cf0 ;\
+		\}\
+		
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+			
+\f0\b \cf2 throw
+\f1\b0 \cf0  
+\f0\b \cf2 new
+\f1\b0 \cf0  UnsupportedOperationException (\cf7 "No checking account exists."\cf0 );\
+		\}\
+	\}\
+	\
+	\cf4 // This function mutates the the savings account for the bank account.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  setSavings(
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 num\cf0 ) \{\
+		\cf6 savings\cf0  = \cf5 num\cf0 ;\
+	\}\
+	\
+	\cf4 /*\cf0 \
+\cf4 	 * This function checks to if the checking account exists, and then\cf0 \
+\cf4 	 * mutates the checking account for the bank account.\cf0 \
+\cf4 	 */\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 void
+\f1\b0 \cf0  setChecking(
+\f0\b \cf2 double
+\f1\b0 \cf0  \cf5 num\cf0 ) \{\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf6 checkExists\cf0  == 
+\f0\b \cf2 true
+\f1\b0 \cf0 ) \{\
+			\cf6 checking\cf0  = \cf5 num\cf0 ;\
+		\}\
+		
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+			
+\f0\b \cf2 throw
+\f1\b0 \cf0  
+\f0\b \cf2 new
+\f1\b0 \cf0  UnsupportedOperationException (\cf7 "No checking account exists."\cf0 );\
+		\}\
+	\}\
+	\
+	\cf4 // This function checks if a checking account exists for the bank account.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 boolean
+\f1\b0 \cf0  checkingExists() \{\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf6 checkExists\cf0  == 
+\f0\b \cf2 true
+\f1\b0 \cf0 ) \{\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0  
+\f0\b \cf2 true
+\f1\b0 \cf0 ;\
+		\}\
+		
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0  
+\f0\b \cf2 false
+\f1\b0 \cf0 ;\
+		\}\
+	\}\
+	\
+	\cf4 // This function checks if the pin is correct for the bank account.\cf0 \
+	
+\f0\b \cf2 protected
+\f1\b0 \cf0  
+\f0\b \cf2 boolean
+\f1\b0 \cf0  checkPin(
+\f0\b \cf2 int
+\f1\b0 \cf0  \cf5 num\cf0 ) \{\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf5 num\cf0  == \cf6 pin\cf0 ) \{\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0  
+\f0\b \cf2 true
+\f1\b0 \cf0 ;\
+		\}\
+		
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0  
+\f0\b \cf2 false
+\f1\b0 \cf0 ;\
+		\}\
+	\}\
+	\
+	\cf4 /* This is the override function for the toString function. It prints out\cf0 \
+\cf4 	 * the bank account information.\cf0 \
+\cf4 	 */\cf0 \
+	\cf8 @Override\cf0 \
+	
+\f0\b \cf2 public
+\f1\b0 \cf0  String toString() \{\
+		
+\f0\b \cf2 if
+\f1\b0 \cf0  (\cf6 checkExists\cf0  == 
+\f0\b \cf2 true
+\f1\b0 \cf0 )\{	\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0  \cf6 acntNum\cf0  + \cf7 ","\cf0  + \cf6 pin\cf0  + \cf7 ","\cf0  + \cf6 savings\cf0  + \cf7 ","\cf0  + \cf6 checking\cf0  +\cf7 ","\cf0 \
+				+ \cf7 ","\cf0  + \cf6 acntName\cf0 ;\
+		\}\
+		
+\f0\b \cf2 else
+\f1\b0 \cf0  \{\
+			
+\f0\b \cf2 return
+\f1\b0 \cf0  \cf6 acntNum\cf0  + \cf7 ","\cf0  + \cf6 pin\cf0  + \cf7 ","\cf0  + \cf6 savings\cf0  + \cf7 ","\cf0  + \cf6 acntName\cf0 ;\
+		\}\
+	\}\
+\}\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+}
